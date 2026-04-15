@@ -24,7 +24,15 @@ npm install
 3. Copier `.env.example` en `.env` et renseigner :
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
-4. Modifier les PIN dans Supabase (table `users`) pour la prod.
+4. Définir les PIN réels dans Supabase (les PIN seedés sont aléatoires par sécurité).
+
+Exemple (à exécuter dans SQL Editor Supabase) :
+
+```sql
+update public.users
+set pin_hash = crypt('1234', gen_salt('bf'))
+where name = 'Camille';
+```
 
 ## Lancement local
 

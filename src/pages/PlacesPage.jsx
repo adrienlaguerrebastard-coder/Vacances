@@ -14,14 +14,19 @@ export default function PlacesPage({ session }) {
   const [places, setPlaces] = useState([]);
   const [newName, setNewName] = useState("");
 
+  useEffect(() => {
+    const refresh = async () => {
+      const data = await getMyPlacesWithDays(session.id, year);
+      setPlaces(data);
+    };
+
+    refresh();
+  }, [session.id, year]);
+
   const refresh = async () => {
     const data = await getMyPlacesWithDays(session.id, year);
     setPlaces(data);
   };
-
-  useEffect(() => {
-    refresh();
-  }, [session.id, year]);
 
   const addPlace = async (e) => {
     e.preventDefault();

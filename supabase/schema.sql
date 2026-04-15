@@ -45,17 +45,17 @@ create or replace view public.public_users as
 select id, name from public.users;
 
 insert into public.users (name, pin_hash) values
-('Camille', crypt('1111', gen_salt('bf'))),
-('Amalia', crypt('1111', gen_salt('bf'))),
-('Barth', crypt('1111', gen_salt('bf'))),
-('Brune', crypt('1111', gen_salt('bf'))),
-('Edgar', crypt('1111', gen_salt('bf'))),
-('Guillaume', crypt('1111', gen_salt('bf'))),
-('Maximilien', crypt('1111', gen_salt('bf'))),
-('Penelope', crypt('1111', gen_salt('bf'))),
-('Solene', crypt('1111', gen_salt('bf'))),
-('Louison', crypt('1111', gen_salt('bf'))),
-('Adrien', crypt('1111', gen_salt('bf')))
+('Camille', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Amalia', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Barth', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Brune', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Edgar', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Guillaume', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Maximilien', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Penelope', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Solene', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Louison', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
+('Adrien', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf')))
 on conflict (name) do nothing;
 
 alter table public.users enable row level security;
