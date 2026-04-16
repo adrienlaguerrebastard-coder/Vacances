@@ -9,14 +9,18 @@ export const SUPABASE_CONFIG_ERROR =
     ? "Variables Supabase manquantes (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)"
     : "";
 
+function throwConfigError() {
+  throw new Error(SUPABASE_CONFIG_ERROR || "Configuration Supabase invalide");
+}
+
 const errorClient = new Proxy(
   {},
   {
     get() {
-      throw new Error(SUPABASE_CONFIG_ERROR);
+      throwConfigError();
     },
     has() {
-      throw new Error(SUPABASE_CONFIG_ERROR);
+      throwConfigError();
     }
   }
 );

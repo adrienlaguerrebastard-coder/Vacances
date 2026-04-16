@@ -43,7 +43,11 @@ export default function AuthGate({ onLogin }) {
       <div className="card">
         <h1>Vacances entre amis</h1>
         <p>Choisis ton prénom et ton PIN.</p>
-        {SUPABASE_CONFIG_ERROR && <p style={{ color: ERROR_COLOR }}>{SUPABASE_CONFIG_ERROR}</p>}
+        {SUPABASE_CONFIG_ERROR && (
+          <p style={{ color: ERROR_COLOR }} role="alert">
+            {SUPABASE_CONFIG_ERROR}
+          </p>
+        )}
         <form onSubmit={submit}>
           <div className="row">
             <select value={name} onChange={(e) => setName(e.target.value)}>
@@ -64,7 +68,11 @@ export default function AuthGate({ onLogin }) {
             </button>
           </div>
         </form>
-        {error && <p style={{ color: ERROR_COLOR }}>{error}</p>}
+        {error && (
+          <p style={{ color: ERROR_COLOR }} role="alert">
+            {error}
+          </p>
+        )}
       </div>
     </div>
   );
