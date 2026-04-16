@@ -65,9 +65,13 @@ alter table public.planned_trips enable row level security;
 alter table public.places enable row level security;
 alter table public.place_availabilities enable row level security;
 
+drop policy if exists read_availabilities on public.availabilities;
 create policy read_availabilities on public.availabilities for select using (true);
+drop policy if exists read_planned_trips on public.planned_trips;
 create policy read_planned_trips on public.planned_trips for select using (true);
+drop policy if exists read_places on public.places;
 create policy read_places on public.places for select using (true);
+drop policy if exists read_place_availabilities on public.place_availabilities;
 create policy read_place_availabilities on public.place_availabilities for select using (true);
 
 revoke all on public.users from anon, authenticated;
