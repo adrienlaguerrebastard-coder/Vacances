@@ -10,7 +10,10 @@ export const SUPABASE_CONFIG_ERROR =
     : "";
 
 function throwConfigError() {
-  throw new Error(SUPABASE_CONFIG_ERROR || "Configuration Supabase invalide");
+  if (hasSupabaseConfig) {
+    throw new Error("Supabase fallback client used unexpectedly");
+  }
+  throw new Error(SUPABASE_CONFIG_ERROR);
 }
 
 const errorClient = new Proxy(
