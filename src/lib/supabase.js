@@ -2,9 +2,10 @@ import { createClient } from "@supabase/supabase-js";
 
 const url = import.meta.env.VITE_SUPABASE_URL;
 const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const hasSupabaseConfig = Boolean(url && key);
 
 export const SUPABASE_CONFIG_ERROR =
-  !url || !key
+  !hasSupabaseConfig
     ? "Variables Supabase manquantes (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)"
     : "";
 
@@ -16,8 +17,11 @@ const errorClient = new Proxy(
         throw new Error(SUPABASE_CONFIG_ERROR);
       }
       return undefined;
+    },
+    has() {
+      return false;
     }
   }
 );
 
-export const supabase = SUPABASE_CONFIG_ERROR ? errorClient : createClient(url, key);
+export const supabase = hasSupabaseConfig ? createClient(url, key) : errorClient;
