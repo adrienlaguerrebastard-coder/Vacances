@@ -1,4 +1,4 @@
-create extension if not exists pgcrypto;
+create extension if not exists pgcrypto with schema extensions;
 
 create table if not exists public.users (
   id uuid primary key default gen_random_uuid(),
@@ -45,17 +45,17 @@ create or replace view public.public_users as
 select id, name from public.users;
 
 insert into public.users (name, pin_hash) values
-('Camille', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Amalia', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Barth', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Brune', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Edgar', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Guillaume', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Maximilien', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Penelope', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Solene', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Louison', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf'))),
-('Adrien', crypt(encode(gen_random_bytes(16), 'hex'), gen_salt('bf')))
+('Camille', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Amalia', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Barth', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Brune', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Edgar', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Guillaume', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Maximilien', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Penelope', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Solene', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Louison', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf'))),
+('Adrien', extensions.crypt(encode(extensions.gen_random_bytes(16), 'hex'), extensions.gen_salt('bf')))
 on conflict (name) do nothing;
 
 alter table public.users enable row level security;
@@ -80,13 +80,13 @@ create or replace function public.check_user_pin(p_user_id uuid, p_pin text)
 returns boolean
 language sql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
   select exists (
     select 1
     from public.users u
     where u.id = p_user_id
-      and u.pin_hash = crypt(p_pin, u.pin_hash)
+      and u.pin_hash = extensions.crypt(p_pin, u.pin_hash)
   );
 $$;
 
@@ -94,7 +94,7 @@ create or replace function public.rpc_verify_user(p_name text, p_pin text)
 returns jsonb
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_user public.users%rowtype;
@@ -105,7 +105,7 @@ begin
     return jsonb_build_object('ok', false, 'message', 'Utilisateur introuvable');
   end if;
 
-  if v_user.pin_hash <> crypt(p_pin, v_user.pin_hash) then
+  if v_user.pin_hash <> extensions.crypt(p_pin, v_user.pin_hash) then
     return jsonb_build_object('ok', false, 'message', 'PIN invalide');
   end if;
 
