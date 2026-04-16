@@ -1,63 +1,57 @@
 import { supabase } from "./supabase";
 import { seasonRange } from "./date";
 
-export async function verifyUser(name, pin) {
-  const { data, error } = await supabase.rpc("rpc_verify_user", { p_name: name, p_pin: pin });
+export async function verifyUser(name) {
+  const { data, error } = await supabase.rpc("rpc_verify_user", { p_name: name });
   if (error) throw error;
   return data;
 }
 
-export async function toggleAvailability(userId, pin, day) {
+export async function toggleAvailability(userId, day) {
   const { error } = await supabase.rpc("rpc_toggle_availability", {
     p_user_id: userId,
-    p_pin: pin,
     p_day: day
   });
   if (error) throw error;
 }
 
-export async function togglePlannedTrip(userId, pin, day) {
+export async function togglePlannedTrip(userId, day) {
   const { error } = await supabase.rpc("rpc_toggle_planned_trip", {
     p_user_id: userId,
-    p_pin: pin,
     p_day: day
   });
   if (error) throw error;
 }
 
-export async function createPlace(userId, pin, name) {
+export async function createPlace(userId, name) {
   const { data, error } = await supabase.rpc("rpc_create_place", {
     p_user_id: userId,
-    p_pin: pin,
     p_name: name
   });
   if (error) throw error;
   return data;
 }
 
-export async function updatePlaceName(userId, pin, placeId, name) {
+export async function updatePlaceName(userId, placeId, name) {
   const { error } = await supabase.rpc("rpc_update_place_name", {
     p_user_id: userId,
-    p_pin: pin,
     p_place_id: placeId,
     p_name: name
   });
   if (error) throw error;
 }
 
-export async function deletePlace(userId, pin, placeId) {
+export async function deletePlace(userId, placeId) {
   const { error } = await supabase.rpc("rpc_delete_place", {
     p_user_id: userId,
-    p_pin: pin,
     p_place_id: placeId
   });
   if (error) throw error;
 }
 
-export async function togglePlaceAvailability(userId, pin, placeId, day) {
+export async function togglePlaceAvailability(userId, placeId, day) {
   const { error } = await supabase.rpc("rpc_toggle_place_availability", {
     p_user_id: userId,
-    p_pin: pin,
     p_place_id: placeId,
     p_day: day
   });

@@ -24,15 +24,6 @@ npm install
 3. Copier `.env.example` en `.env` et renseigner :
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
-4. Définir les PIN réels dans Supabase (les PIN seedés sont aléatoires par sécurité).
-
-Exemple (à exécuter dans SQL Editor Supabase) :
-
-```sql
-update public.users
-set pin_hash = crypt('1234', gen_salt('bf'))
-where name = 'Camille';
-```
 
 ## Lancement local
 
@@ -58,7 +49,7 @@ npm run preview
 
 ## Choix techniques (bref)
 
-- **PIN + prénom** via RPC SQL : simple pour un groupe privé, sans auth complexe.
+- **Prénom uniquement** via RPC SQL : usage ultra simple pour un groupe privé.
 - **RPC SECURITY DEFINER** pour les écritures : évite d’ouvrir les tables en écriture.
 - **Juillet/Août au niveau DB** (check constraints) : robustesse des données.
 - **UI simple et responsive** pour usage mobile facile.

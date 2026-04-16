@@ -18,7 +18,7 @@ export default function PlannedTripsPage({ session }) {
   }, [session.id, year]);
 
   const onToggle = async (iso) => {
-    await togglePlannedTrip(session.id, session.pin, iso);
+    await togglePlannedTrip(session.id, iso);
     setDays((prev) => {
       const next = new Set(prev);
       if (next.has(iso)) next.delete(iso);
