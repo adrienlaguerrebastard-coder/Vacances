@@ -18,7 +18,7 @@ export default function AvailabilityPage({ session }) {
   }, [session.id, year]);
 
   const onToggle = async (iso) => {
-    await toggleAvailability(session.id, session.pin, iso);
+    await toggleAvailability(session.id, iso);
     setDays((prev) => {
       const next = new Set(prev);
       if (next.has(iso)) next.delete(iso);

@@ -31,24 +31,24 @@ export default function PlacesPage({ session }) {
   const addPlace = async (e) => {
     e.preventDefault();
     if (!newName.trim()) return;
-    await createPlace(session.id, session.pin, newName.trim());
+    await createPlace(session.id, newName.trim());
     setNewName("");
     await refresh();
   };
 
   const renamePlace = async (id, name) => {
     if (!name.trim()) return;
-    await updatePlaceName(session.id, session.pin, id, name.trim());
+    await updatePlaceName(session.id, id, name.trim());
     await refresh();
   };
 
   const removePlace = async (id) => {
-    await deletePlace(session.id, session.pin, id);
+    await deletePlace(session.id, id);
     await refresh();
   };
 
   const toggleDay = async (placeId, day) => {
-    await togglePlaceAvailability(session.id, session.pin, placeId, day);
+    await togglePlaceAvailability(session.id, placeId, day);
     setPlaces((prev) =>
       prev.map((p) => {
         if (p.id !== placeId) return p;
