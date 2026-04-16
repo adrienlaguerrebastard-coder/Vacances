@@ -43,6 +43,8 @@ create table if not exists public.place_availabilities (
 create or replace view public.public_users as
 select id, name from public.users;
 
+alter table public.users drop column if exists pin_hash;
+
 insert into public.users (name) values
 ('Camille'),
 ('Amalia'),
