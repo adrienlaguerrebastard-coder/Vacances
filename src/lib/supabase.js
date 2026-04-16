@@ -8,13 +8,16 @@ export const SUPABASE_CONFIG_ERROR =
     ? "Variables Supabase manquantes (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)"
     : "";
 
-const missingConfigClient = new Proxy(
+const errorClient = new Proxy(
   {},
   {
     get() {
-      throw new Error(SUPABASE_CONFIG_ERROR);
+      if (SUPABASE_CONFIG_ERROR) {
+        throw new Error(SUPABASE_CONFIG_ERROR);
+      }
+      return undefined;
     }
   }
 );
 
-export const supabase = SUPABASE_CONFIG_ERROR ? missingConfigClient : createClient(url, key);
+export const supabase = SUPABASE_CONFIG_ERROR ? errorClient : createClient(url, key);
