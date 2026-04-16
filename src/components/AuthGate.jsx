@@ -15,6 +15,7 @@ const FIXED_USERS = [
   "Louison",
   "Adrien"
 ];
+const ERROR_COLOR = "#d64550";
 
 export default function AuthGate({ onLogin }) {
   const [name, setName] = useState(FIXED_USERS[0]);
@@ -42,7 +43,7 @@ export default function AuthGate({ onLogin }) {
       <div className="card">
         <h1>Vacances entre amis</h1>
         <p>Choisis ton prénom et ton PIN.</p>
-        {SUPABASE_CONFIG_ERROR && <p style={{ color: "#d64550" }}>{SUPABASE_CONFIG_ERROR}</p>}
+        {SUPABASE_CONFIG_ERROR && <p style={{ color: ERROR_COLOR }}>{SUPABASE_CONFIG_ERROR}</p>}
         <form onSubmit={submit}>
           <div className="row">
             <select value={name} onChange={(e) => setName(e.target.value)}>
@@ -63,7 +64,7 @@ export default function AuthGate({ onLogin }) {
             </button>
           </div>
         </form>
-        {error && <p style={{ color: "#d64550" }}>{error}</p>}
+        {error && <p style={{ color: ERROR_COLOR }}>{error}</p>}
       </div>
     </div>
   );

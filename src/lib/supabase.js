@@ -13,13 +13,10 @@ const errorClient = new Proxy(
   {},
   {
     get() {
-      if (SUPABASE_CONFIG_ERROR) {
-        throw new Error(SUPABASE_CONFIG_ERROR);
-      }
-      return undefined;
+      throw new Error(SUPABASE_CONFIG_ERROR);
     },
     has() {
-      return false;
+      throw new Error(SUPABASE_CONFIG_ERROR);
     }
   }
 );
