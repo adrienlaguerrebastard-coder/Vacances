@@ -13,7 +13,12 @@ export default function App() {
 
   useEffect(() => {
     const raw = localStorage.getItem("vacances_session");
-    if (raw) setSession(JSON.parse(raw));
+    if (!raw) return;
+    try {
+      setSession(JSON.parse(raw));
+    } catch {
+      localStorage.removeItem("vacances_session");
+    }
   }, []);
 
   const onLogin = (nextSession) => {
