@@ -4,13 +4,13 @@ export default function Layout({ session, onLogout, children }) {
   return (
     <div className="container">
       <div className="card top-nav compact-card">
-        <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
+        <div className="row layout-header">
           <strong aria-live="polite">Connecté : {session.name}</strong>
           <button className="secondary" onClick={onLogout}>
             Se déconnecter
           </button>
         </div>
-        <nav className="nav" style={{ marginTop: 12 }} aria-label="Navigation principale">
+        <nav className="nav nav-main" aria-label="Navigation principale">
           <NavLink to="/">Accueil</NavLink>
           <NavLink to="/disponibilites">Mes disponibilités</NavLink>
           <NavLink to="/vacances-prevues">Mes vacances prévues</NavLink>

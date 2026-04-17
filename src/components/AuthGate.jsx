@@ -38,8 +38,8 @@ export default function AuthGate({ onLogin }) {
   };
 
   return (
-    <div className="container" style={{ maxWidth: 520 }}>
-      <div className="card">
+    <div className="container auth-container">
+      <div className="card auth-card">
         <h1>Vacances entre amis — outil d’organisation</h1>
         <p>Choisis ton prénom pour accéder à l’espace du groupe.</p>
         {SUPABASE_CONFIG_ERROR && (

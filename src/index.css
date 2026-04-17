@@ -1,7 +1,7 @@
 :root {
   font-family: Inter, system-ui, sans-serif;
   color: #172033;
-  background: #f4f7fb;
+  background: #f3f6ff;
 }
 
 * {
@@ -11,6 +11,12 @@
 body {
   margin: 0;
   min-height: 100vh;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(47, 128, 237, 0.14), transparent 36%),
+    radial-gradient(circle at 100% 0%, rgba(13, 102, 196, 0.1), transparent 40%),
+    #f3f6ff;
+  color: #162138;
+  line-height: 1.5;
 }
 
 a:focus-visible,
@@ -22,16 +28,17 @@ select:focus-visible {
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1140px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 20px;
 }
 
 .card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid #dbe4f3;
+  box-shadow: 0 10px 28px rgba(14, 39, 80, 0.08);
   margin-bottom: 16px;
 }
 
@@ -43,6 +50,19 @@ h1,
 h2,
 h3 {
   margin-top: 0;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(1.45rem, 2.1vw, 1.95rem);
+}
+
+h2 {
+  font-size: clamp(1.15rem, 1.5vw, 1.45rem);
+}
+
+h3 {
+  font-size: 1.05rem;
 }
 
 .row {
@@ -56,9 +76,30 @@ select,
 button,
 textarea {
   padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #c8d1e0;
+  border-radius: 10px;
+  border: 1px solid #cdd7e8;
   font-size: 14px;
+  transition: all 0.18s ease;
+}
+
+input,
+select,
+textarea {
+  background: #fdfefe;
+  color: #1c2b4a;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: #9db3d8;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #2f80ed;
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.14);
 }
 
 textarea {
@@ -69,9 +110,15 @@ textarea {
 
 button {
   cursor: pointer;
-  background: #1f6feb;
+  background: linear-gradient(180deg, #2f80ed 0%, #1f6feb 100%);
   color: white;
   border: none;
+  font-weight: 600;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(31, 111, 235, 0.26);
 }
 
 button:disabled {
@@ -80,8 +127,12 @@ button:disabled {
 }
 
 button.secondary {
-  background: #e7edf8;
-  color: #1f355f;
+  background: #e9effa;
+  color: #1a3769;
+}
+
+button.secondary:hover:not(:disabled) {
+  box-shadow: 0 8px 18px rgba(26, 55, 105, 0.16);
 }
 
 .nav {
@@ -92,22 +143,41 @@ button.secondary {
 
 .top-nav {
   position: sticky;
-  top: 8px;
+  top: 10px;
   z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.layout-header {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-main {
+  margin-top: 12px;
 }
 
 .nav a {
   text-decoration: none;
-  background: #fff;
-  border-radius: 8px;
-  padding: 8px 10px;
-  color: #1f355f;
-  border: 1px solid #d4dcec;
+  background: #f5f8ff;
+  border-radius: 10px;
+  padding: 8px 11px;
+  color: #1c3a68;
+  border: 1px solid #d7e0f0;
+  transition: all 0.18s ease;
+}
+
+.nav a:hover {
+  background: #ebf2ff;
+  border-color: #b7caea;
+  transform: translateY(-1px);
 }
 
 .nav a.active {
   background: #1f6feb;
   color: #fff;
+  border-color: #1f6feb;
+  box-shadow: 0 8px 18px rgba(31, 111, 235, 0.3);
 }
 
 .calendar {
@@ -122,19 +192,35 @@ button.secondary {
   gap: 6px;
 }
 
+.month-grid strong {
+  color: #37517f;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  padding: 2px 0;
+}
+
 .day {
-  border: 1px solid #d7deeb;
+  border: 1px solid #d1dced;
   background: #fff;
-  border-radius: 8px;
-  min-height: 38px;
+  border-radius: 10px;
+  min-height: 40px;
   font-size: 12px;
   color: #243a63;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(14, 39, 80, 0.05);
+}
+
+.day:hover:not(:disabled) {
+  border-color: #91add8;
+  transform: translateY(-1px);
 }
 
 .day.selected {
   background: #2f80ed;
   color: #fff;
   border-color: #2f80ed;
+  box-shadow: 0 8px 16px rgba(47, 128, 237, 0.34);
 }
 
 .day.readonly {
@@ -195,6 +281,44 @@ button.secondary {
   overflow-x: auto;
 }
 
+table {
+  border-radius: 12px;
+}
+
+th {
+  color: #2b4c7f;
+  font-size: 13px;
+}
+
+td {
+  border-bottom: 1px solid #eef2f8;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #3d5680;
+}
+
+.hero-card {
+  background:
+    linear-gradient(145deg, rgba(47, 128, 237, 0.1), rgba(255, 255, 255, 0.92)),
+    rgba(255, 255, 255, 0.96);
+}
+
+.auth-container {
+  max-width: 540px;
+}
+
+.auth-card {
+  margin-top: 36px;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -224,6 +348,10 @@ button.secondary {
   .card {
     padding: 12px;
     margin-bottom: 10px;
+  }
+
+  .layout-header {
+    gap: 10px;
   }
 
   .nav {
