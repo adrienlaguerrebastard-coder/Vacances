@@ -10,6 +10,7 @@ import SummaryPage from "./pages/SummaryPage";
 import HelpPage from "./pages/HelpPage";
 
 const SESSION_KEY = "vacances_session";
+// Session expires after 12 hours of inactivity.
 const SESSION_TTL_MS = 1000 * 60 * 60 * 12;
 
 function isValidSession(rawSession) {
