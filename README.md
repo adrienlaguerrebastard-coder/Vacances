@@ -5,6 +5,8 @@ Application V1 pour organiser les vacances d’un groupe fixe sur juillet/août 
 - vacances déjà prévues
 - lieux/maisons disponibles
 - meilleures dates classées automatiquement
+- filtres + export CSV du récap
+- notes locales et marquage des dates incontournables/impossibles
 
 ## Stack
 - React + Vite
@@ -36,6 +38,12 @@ npm run dev
 ```bash
 npm run build
 npm run preview
+```
+
+## Tests
+
+```bash
+npm run test
 ```
 
 ## Déploiement GitHub Pages

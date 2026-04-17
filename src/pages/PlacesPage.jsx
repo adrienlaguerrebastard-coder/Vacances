@@ -13,17 +13,30 @@ export default function PlacesPage({ session }) {
   const [year] = useState(getSeasonYear());
   const [places, setPlaces] = useState([]);
   const [newName, setNewName] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const refresh = async () => {
-      const data = await getMyPlacesWithDays(session.id, year);
-      setPlaces(data);
+      try {
+        setLoading(true);
+        setError("");
+        const data = await getMyPlacesWithDays(session.id, year);
+        setPlaces(data);
+      } catch (err) {
+        setError(err.message || "Impossible de charger les lieux.");
+      } finally {
+        setLoading(false);
+      }
     };
 
     refresh();
   }, [session.id, year]);
 
   const refresh = async () => {
+    setError("");
     const data = await getMyPlacesWithDays(session.id, year);
     setPlaces(data);
   };
@@ -31,33 +44,73 @@ export default function PlacesPage({ session }) {
   const addPlace = async (e) => {
     e.preventDefault();
     if (!newName.trim()) return;
-    await createPlace(session.id, newName.trim());
-    setNewName("");
-    await refresh();
+    try {
+      setSaving(true);
+      setStatus("");
+      setError("");
+      await createPlace(session.id, newName.trim());
+      setNewName("");
+      await refresh();
+      setStatus("Lieu ajouté.");
+    } catch (err) {
+      setError(err.message || "Impossible d’ajouter le lieu.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const renamePlace = async (id, name) => {
     if (!name.trim()) return;
-    await updatePlaceName(session.id, id, name.trim());
-    await refresh();
+    try {
+      setSaving(true);
+      setStatus("");
+      setError("");
+      await updatePlaceName(session.id, id, name.trim());
+      await refresh();
+      setStatus("Lieu renommé.");
+    } catch (err) {
+      setError(err.message || "Impossible de renommer le lieu.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const removePlace = async (id) => {
-    await deletePlace(session.id, id);
-    await refresh();
+    try {
+      setSaving(true);
+      setStatus("");
+      setError("");
+      await deletePlace(session.id, id);
+      await refresh();
+      setStatus("Lieu supprimé.");
+    } catch (err) {
+      setError(err.message || "Impossible de supprimer le lieu.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const toggleDay = async (placeId, day) => {
-    await togglePlaceAvailability(session.id, placeId, day);
-    setPlaces((prev) =>
-      prev.map((p) => {
-        if (p.id !== placeId) return p;
-        const next = new Set(p.days);
-        if (next.has(day)) next.delete(day);
-        else next.add(day);
-        return { ...p, days: next };
-      })
-    );
+    try {
+      setSaving(true);
+      setStatus("");
+      setError("");
+      await togglePlaceAvailability(session.id, placeId, day);
+      setPlaces((prev) =>
+        prev.map((p) => {
+          if (p.id !== placeId) return p;
+          const next = new Set(p.days);
+          if (next.has(day)) next.delete(day);
+          else next.add(day);
+          return { ...p, days: next };
+        })
+      );
+      setStatus("Modification enregistrée.");
+    } catch (err) {
+      setError(err.message || "Échec de l’enregistrement.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -65,25 +118,55 @@ export default function PlacesPage({ session }) {
       <div className="card">
         <h2>Mes lieux / maisons</h2>
         <form className="row" onSubmit={addPlace}>
-          <input placeholder="Nom du lieu" value={newName} onChange={(e) => setNewName(e.target.value)} />
-          <button>Ajouter</button>
+          <label htmlFor="new-place" className="sr-only">
+            Nom du lieu
+          </label>
+          <input
+            id="new-place"
+            placeholder="Nom du lieu"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            disabled={saving}
+          />
+          <button disabled={saving}>Ajouter</button>
         </form>
+        {status && (
+          <p className="status success" role="status" aria-live="polite">
+            {status}
+          </p>
+        )}
+        {error && (
+          <p className="status error" role="alert">
+            {error}
+          </p>
+        )}
       </div>
+
+      {loading && <div className="card">Chargement...</div>}
 
       {places.map((p) => (
         <div className="card" key={p.id}>
           <div className="row" style={{ alignItems: "center" }}>
-            <input defaultValue={p.name} onBlur={(e) => renamePlace(p.id, e.target.value)} style={{ flex: 1 }} />
-            <button className="secondary" type="button" onClick={() => removePlace(p.id)}>
+            <label htmlFor={`place-${p.id}`} className="sr-only">
+              Nom du lieu {p.name}
+            </label>
+            <input
+              id={`place-${p.id}`}
+              defaultValue={p.name}
+              onBlur={(e) => renamePlace(p.id, e.target.value)}
+              style={{ flex: 1 }}
+              disabled={saving}
+            />
+            <button className="secondary" type="button" onClick={() => removePlace(p.id)} disabled={saving}>
               Supprimer
             </button>
           </div>
           <p className="small" style={{ marginTop: 10 }}>Clique sur les dates où ce lieu est disponible.</p>
-          <CalendarGrid year={year} selectedDates={p.days} onToggle={(day) => toggleDay(p.id, day)} />
+          <CalendarGrid year={year} selectedDates={p.days} onToggle={(day) => toggleDay(p.id, day)} disabled={saving} />
         </div>
       ))}
 
-      {places.length === 0 && (
+      {!loading && places.length === 0 && (
         <div className="card">
           <p>Aucun lieu pour le moment.</p>
         </div>
