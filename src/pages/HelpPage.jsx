@@ -2,7 +2,7 @@ export default function HelpPage() {
   return (
     <div className="card">
       <h2>Aide rapide</h2>
-      <ol>
+      <ol className="help-steps">
         <li>Choisis ton prénom pour te connecter.</li>
         <li>Renseigne tes disponibilités et tes vacances prévues.</li>
         <li>Ajoute tes lieux disponibles puis consulte le récap global.</li>
