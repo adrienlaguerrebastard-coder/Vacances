@@ -40,8 +40,8 @@ export default function AuthGate({ onLogin }) {
   return (
     <div className="container" style={{ maxWidth: 520 }}>
       <div className="card">
-        <h1>Vacances entre amis</h1>
-        <p>Choisis ton prénom.</p>
+        <h1>Vacances entre amis — outil d’organisation</h1>
+        <p>Choisis ton prénom pour accéder à l’espace du groupe.</p>
         {SUPABASE_CONFIG_ERROR && (
           <p style={{ color: ERROR_COLOR }} role="alert">
             {SUPABASE_CONFIG_ERROR}
@@ -49,12 +49,15 @@ export default function AuthGate({ onLogin }) {
         )}
         <form onSubmit={submit}>
           <div className="row">
-            <select value={name} onChange={(e) => setName(e.target.value)}>
+            <label htmlFor="user-name" className="sr-only">
+              Prénom
+            </label>
+            <select id="user-name" value={name} onChange={(e) => setName(e.target.value)} aria-label="Choix du prénom">
               {FIXED_USERS.map((u) => (
                 <option key={u}>{u}</option>
               ))}
             </select>
-            <button disabled={loading || !!SUPABASE_CONFIG_ERROR}>
+            <button disabled={loading || !!SUPABASE_CONFIG_ERROR} aria-busy={loading}>
               {loading ? "Connexion..." : "Entrer"}
             </button>
           </div>
